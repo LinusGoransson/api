@@ -22,9 +22,9 @@ var init = function () {
     console.log("onload fungerar..");
 
     //IF(checkbox.checked())
-    utanAvgiftIcon = 'img/grön.png';
+    utanAvgiftIcon = 'img/utanAvgift.png';
     //Returnerar kommunala gatumarksparkeringar utan avgift
-    $.getJSON('http://cors.io/?http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+    $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
         apiUtanAvgift = data;
 
         for (var i = 0; i < apiUtanAvgift.length; i++) {
@@ -37,9 +37,9 @@ var init = function () {
     });
 
     //IF(checkox.checked())
-    automaticon = "img/brun.png";
+    automaticon = "img/automat.png";
     //Returnerar kommunala parkeringsautomater
-    $.getJSON('http://cors.io/?http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+    $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
         apiautomat = data;
 
         for (var i = 0; i < apiautomat.length; i++) {
@@ -49,9 +49,9 @@ var init = function () {
     });
     
     //IF(checkox.checked())
-    medAvgiftIcon = 'img/röd.png';
+    medAvgiftIcon = 'img/medAvgift.png';
     //Returnerar kommunala gatumarksparkeringar med avgift
-    $.getJSON('http://cors.io/?http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+    $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
         apiMedAvgift = data;
 
         for (var i = 0; i < apiMedAvgift.length; i++) {
@@ -61,9 +61,9 @@ var init = function () {
     });
     
     //IF(checkox.checked())
-    handikappIcon = "img/gul.png";
+    handikappIcon = "img/handikapp.png";
     //Returnerar kommunala handikappsparkeringar
-    $.getJSON('http://cors.io/?http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+    $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
         apiHandikapp = data;
 
         for (var i = 0; i < apiHandikapp.length; i++) {
@@ -72,9 +72,9 @@ var init = function () {
         }
     });
     //IF(checkox.checked())
-    mcIcon = "img/blå.png";
+    mcIcon = "img/mc.png";
     //Returnerar MC-parkeringar
-    $.getJSON('http://cors.io/?http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+    $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
         apiMc = data;
 
         for (var i = 0; i < apiMc.length; i++) {
