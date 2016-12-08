@@ -28,3 +28,6 @@
 .handikappIcon{
     width: 150px;
 }
+label{
+    cursor: pointer;
+}

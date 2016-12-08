@@ -4,37 +4,48 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 80%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+            /* Always set the map height explicitly to define the size of the div
+             * element that contains the map. */
+            #map {
+                height: 80%;
+            }
+            /* Optional: Makes the sample page fill the window. */
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
     </head>
     <body onload="init();">
-        
+
         <h3>Please check the following parkingspaces</h3>
         <form name="form1" action="javascript:void(0);" onsubmit="return validate()" >
             <p>When finished hit submit</p>
-            
-            <input type="checkbox" id="master" onchange="toggle(this,'check')"> Markera / avmarkera alla
+
+            <input type="checkbox" id="master" onchange="toggle(this, 'check')"> 
+            <label for="master">Markera / avmarkera alla</label>
             <br/>
             <br/>
-            
-            <input type="checkbox" id="parkeringUtanAvgift" class="check">Utan avgift
-            <input type="checkbox" id="parkingsAutomat" class="check">Automat
-            <input type="checkbox" id="parkeringMedAvgift" class="check">Med avgift
-            <input type="checkbox" id="parkeringMc" class="check">Mc 
-            <input type="checkbox" id="parkeringHandikapp" class="check">Handikapp
+
+            <input type="checkbox" id="parkeringUtanAvgift" class="check">
+                 <label for="parkeringUtanAvgift">Utan avgift</label>
+                 
+            <input type="checkbox" id="parkingsAutomat" class="check">
+                 <label for="parkingsAutomat">Automat</label>
+                 
+            <input type="checkbox" id="parkeringMedAvgift" class="check">
+                 <label for="parkeringMedAvgift">Med Avgift</label>
+                 
+            <input type="checkbox" id="parkeringMc" class="check"> 
+                 <label for="parkeringMc">Mc</label>
+                 
+            <input type="checkbox" id="parkeringHandikapp" class="check">
+                 <label for="parkeringHandikapp">Handikapp</label>
+                 
             <input type="submit" value="Submit"/>
         </form>
-        
+
         <div id="map"></div>
         <script src="jquery/dist/jquery.min.js"></script>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
