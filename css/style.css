@@ -89,3 +89,6 @@
     float: left;
     margin-left: 150px;
 }
+label{
+    cursor: pointer;
+}

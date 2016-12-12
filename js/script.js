@@ -36,8 +36,8 @@ function validate() {
     var choice1 = document.getElementById("parkeringUtanAvgift").checked;
     var choice2 = document.getElementById("parkingsAutomat").checked;
     var choice3 = document.getElementById("parkeringMedAvgift").checked;
-    var choice4 = document.getElementById("parkeringMc").checked;
-    var choice5 = document.getElementById("parkeringHandikapp").checked;
+    var choice4 = document.getElementById("parkeringHandikapp").checked;
+    var choice5 = document.getElementById("parkeringMc").checked;
 
 
 
@@ -45,71 +45,99 @@ function validate() {
         console.log("choice1 fungerar");
         utanAvgiftIcon = 'img/utanAvgift.png';
         //Returnerar kommunala gatumarksparkeringar utan avgift
-        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
-            apiUtanAvgift = data;
+        $.ajax({ 
+        type: 'GET', 
+        dataType: 'jsonp',
+        url: 'http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', 
+        data: { get_param: 'value' }, 
+        success: function (data) { 
+              apiUtanAvgift = data;
 
             for (var i = 0; i < apiUtanAvgift.length; i++) {
                 asd(i, "utanAvgift");
 
-
             }
-        });
+        }
+    });
     }
 
     if (choice2 === true) {
         console.log("choice2 fungerar");
         automaticon = "img/automat.png";
         //Returnerar kommunala parkeringsautomater
-        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
-            apiautomat = data;
+        $.ajax({ 
+        type: 'GET', 
+        dataType: 'jsonp',
+        url: 'http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', 
+        data: { get_param: 'value' }, 
+        success: function (data) { 
+              apiautomat = data;
 
             for (var i = 0; i < apiautomat.length; i++) {
                 asd(i, "automater");
 
             }
-        });
+        }
+    });
     }
 
     if (choice3 === true) {
         console.log("choice3 fungerar");
         medAvgiftIcon = 'img/medAvgift.png';
         //Returnerar kommunala gatumarksparkeringar med avgift
-        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
-            apiMedAvgift = data;
+        $.ajax({ 
+        type: 'GET', 
+        dataType: 'jsonp',
+        url: 'http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', 
+        data: { get_param: 'value' }, 
+        success: function (data) { 
+              apiMedAvgift = data;
 
             for (var i = 0; i < apiMedAvgift.length; i++) {
                 asd(i, "medAvgift");
 
             }
-        });
+        }
+    });
     }
 
     if (choice4 === true) {
         console.log("choice4 fungerar");
         handikappIcon = "img/handikapp.png";
-        //Returnerar kommunala handikappsparkeringar
-        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
-            apiHandikapp = data;
+       $.ajax({ 
+        type: 'GET', 
+        dataType: 'jsonp',
+        url: 'http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', 
+        data: { get_param: 'value' }, 
+        success: function (data) { 
+              apiHandikapp = data;
 
             for (var i = 0; i < apiHandikapp.length; i++) {
                 asd(i, "handikapp");
 
             }
-        });
+        }
+    });
     }
 
     if (choice5 === true) {
         console.log("choice5 fungerar");
         mcIcon = "img/mc.png";
         //Returnerar MC-parkeringar
-        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
-            apiMc = data;
-            
+        $.ajax({ 
+        type: 'GET', 
+        dataType: 'jsonp',
+        url: 'http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', 
+        data: { get_param: 'value' }, 
+        success: function (data) { 
+              apiMc = data;
+
             for (var i = 0; i < apiMc.length; i++) {
                 asd(i, "mc");
 
             }
-        });
+        }
+    });
     } else if ((choice1 === false) &&
             (choice2 === false) &&
             (choice3 === false) &&
@@ -154,9 +182,9 @@ function asd(i, parkeringsNamn) {
                 apiMedAvgift[i].MaxParkingTime +
                 parkeringsPlatserMedAvgift
                 + extraInfoMedAvgift;
-                infoMed.appendChild(border);
-                
-                var streetview = document.createElement("DIV");
+        infoMed.appendChild(border);
+
+        var streetview = document.createElement("DIV");
         streetview.style.width = "250px";
         streetview.style.height = "120px";
         border.appendChild(streetview);
@@ -164,7 +192,7 @@ function asd(i, parkeringsNamn) {
             content: infoMed
 
         });
-        medAvgiftMaker.addListener('click', function () {          
+        medAvgiftMaker.addListener('click', function () {
             windowMed.open(map, medAvgiftMaker);
             // tar bort google maps infowindow vita backgrund 
             var iwOuter = $('.gm-style-iw');
@@ -178,15 +206,15 @@ function asd(i, parkeringsNamn) {
                 'box-shadow': '0 0 5px #3990B9'
             });
             var panorama = new google.maps.StreetViewPanorama(streetview, {
-            navigationControl: false,
-            enableCloseButton: false,
-            addressControl: false,
-            linksControl: false,
-            clickToGo: false,
-            panControl: false,
-            visible: true,
-            position: medAvgiftMaker.getPosition()
-        });
+                navigationControl: false,
+                enableCloseButton: false,
+                addressControl: false,
+                linksControl: false,
+                clickToGo: false,
+                panControl: false,
+                visible: true,
+                position: medAvgiftMaker.getPosition()
+            });
         });
     }
 
@@ -216,7 +244,7 @@ function asd(i, parkeringsNamn) {
 
         //iformations fönster om parkeringar utan avgift
         var infoUtan = document.createElement("DIV");
-            infoUtan.innerHTML = '<div class="infoFonsterUtan"><p class="titel">Parkering utan avgift</p></div>';
+        infoUtan.innerHTML = '<div class="infoFonsterUtan"><p class="titel">Parkering utan avgift</p></div>';
         var border = document.createElement("DIV");
         border.className = "border";
         border.innerHTML = '<p class="subTitel">Plats: </p>' +
@@ -225,9 +253,9 @@ function asd(i, parkeringsNamn) {
                 apiUtanAvgift[i].MaxParkingTime +
                 parkeringsPlatserUtanAvgift +
                 extraInfoUtanAvgift;
-                infoUtan.appendChild(border);
-                
-                var streetview = document.createElement("DIV");
+        infoUtan.appendChild(border);
+
+        var streetview = document.createElement("DIV");
         streetview.style.width = "250px";
         streetview.style.height = "120px";
         border.appendChild(streetview);
@@ -248,15 +276,15 @@ function asd(i, parkeringsNamn) {
                 'box-shadow': '0 0 5px #3990B9'
             });
             var panorama = new google.maps.StreetViewPanorama(streetview, {
-            navigationControl: false,
-            enableCloseButton: false,
-            addressControl: false,
-            linksControl: false,
-            clickToGo: false,
-            panControl: false,
-            visible: true,
-            position: utanAvgiftMarker.getPosition()
-        });
+                navigationControl: false,
+                enableCloseButton: false,
+                addressControl: false,
+                linksControl: false,
+                clickToGo: false,
+                panControl: false,
+                visible: true,
+                position: utanAvgiftMarker.getPosition()
+            });
         });
     }
 
@@ -267,28 +295,28 @@ function asd(i, parkeringsNamn) {
             icon: automaticon
         });
         //iformations fönster om automater 
-        
+
         var infoauto = document.createElement("DIV");
-          infoauto.innerHTML = '<div class="infoFonsterAutomat"><p class="titel">Automat</p></div>';
+        infoauto.innerHTML = '<div class="infoFonsterAutomat"><p class="titel">Automat</p></div>';
         var border = document.createElement("DIV");
         border.className = "border";
-        border.innerHTML =  '<p class="subTitel">Plats: </p>' +
+        border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiautomat[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiautomat[i].MaxParkingTime +
                 '<p class="subTitel">Kostnad: </p>' +
                 apiautomat[i].ParkingCost;
         infoauto.appendChild(border);
-        
-        
+
+
         var streetview = document.createElement("DIV");
         streetview.style.width = "250px";
         streetview.style.height = "120px";
-       border.appendChild(streetview);
+        border.appendChild(streetview);
         var autowindow = new google.maps.InfoWindow({
             content: infoauto
         });
-        
+
         automat.addListener('click', function () {
             autowindow.open(map, automat);
             // tar bort google maps infowindow vita backgrund 
@@ -302,17 +330,17 @@ function asd(i, parkeringsNamn) {
                 right: '37px', top: '15px',
                 'box-shadow': '0 0 5px #3990B9'
             });
-            
+
             var panorama = new google.maps.StreetViewPanorama(streetview, {
-            navigationControl: false,
-            enableCloseButton: false,
-            addressControl: false,
-            linksControl: false,
-            clickToGo: false,
-            panControl: false,
-            visible: true,
-            position: automat.getPosition()
-        });
+                navigationControl: false,
+                enableCloseButton: false,
+                addressControl: false,
+                linksControl: false,
+                clickToGo: false,
+                panControl: false,
+                visible: true,
+                position: automat.getPosition()
+            });
         });
     }
 
@@ -332,18 +360,18 @@ function asd(i, parkeringsNamn) {
         infoHandi.innerHTML = '<div class="infoFonsterHandi"><p class="titel">Handikapparkering</p></div>';
         var border = document.createElement("DIV");
         border.className = "border";
-        border.innerHTML ='<p class="subTitel">Plats: </p>' +
+        border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiHandikapp[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiHandikapp[i].MaxParkingTime +
-                parkeringsPlatserHandi; 
+                parkeringsPlatserHandi;
         infoHandi.appendChild(border);
-        
-        
+
+
         var streetview = document.createElement("DIV");
         streetview.style.width = "250px";
         streetview.style.height = "120px";
-       border.appendChild(streetview);
+        border.appendChild(streetview);
         var windowHandi = new google.maps.InfoWindow({
             content: infoHandi
         });
@@ -361,15 +389,15 @@ function asd(i, parkeringsNamn) {
                 'box-shadow': '0 0 5px #3990B9'
             });
             var panorama = new google.maps.StreetViewPanorama(streetview, {
-            navigationControl: false,
-            enableCloseButton: false,
-            addressControl: false,
-            linksControl: false,
-            clickToGo: false,
-            panControl: false,
-            visible: true,
-            position: handikappMarker.getPosition()
-        });
+                navigationControl: false,
+                enableCloseButton: false,
+                addressControl: false,
+                linksControl: false,
+                clickToGo: false,
+                panControl: false,
+                visible: true,
+                position: handikappMarker.getPosition()
+            });
         });
     }
 
@@ -387,19 +415,19 @@ function asd(i, parkeringsNamn) {
         }
 
         var infoMc = document.createElement("DIV");
-            infoMc.innerHTML = '<div class="infoFonsterMc"><p class="titel">Mc parkeringar</p></div>';
-            var border = document.createElement("DIV");
-            border.className = "border";
-            border.innerHTML = '<p class="subTitel">Plats: </p>' +
+        infoMc.innerHTML = '<div class="infoFonsterMc"><p class="titel">Mc parkeringar</p></div>';
+        var border = document.createElement("DIV");
+        border.className = "border";
+        border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiMc[i].Name +
                 maxParkeringMc;
         infoMc.appendChild(border);
-        
-        
+
+
         var streetview = document.createElement("DIV");
         streetview.style.width = "250px";
         streetview.style.height = "120px";
-       border.appendChild(streetview);
+        border.appendChild(streetview);
         var windowMc = new google.maps.InfoWindow({
             content: infoMc
         });
@@ -417,22 +445,24 @@ function asd(i, parkeringsNamn) {
                 'box-shadow': '0 0 5px #3990B9'
             });
             var panorama = new google.maps.StreetViewPanorama(streetview, {
-            navigationControl: false,
-            enableCloseButton: false,
-            addressControl: false,
-            linksControl: false,
-            clickToGo: false,
-            panControl: false,
-            visible: true,
-            position: McMarker.getPosition()
-        });
+                navigationControl: false,
+                enableCloseButton: false,
+                addressControl: false,
+                linksControl: false,
+                clickToGo: false,
+                panControl: false,
+                visible: true,
+                position: McMarker.getPosition()
+            });
         });
     }
 
-    
+
 }
 
-
+function clearmarkers() {
+    Mc[markers.length - 1].setMap(null);
+}
 
 
 function loadMap(position) {
@@ -442,7 +472,7 @@ function loadMap(position) {
     //AIzaSyD87KDtA4OkpIs5IEVT4d_gEdAwlE-aYTw
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: latitude, lng: longitude},
-        zoom: 10
+        zoom: 7
     });
     var marker = new google.maps.Marker({
         position: {lat: latitude, lng: longitude},
