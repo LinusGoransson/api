@@ -1,4 +1,6 @@
 
+/* global swag */
+
 function initMap() {
     if (Modernizr.geolocation) {
         console.log("vi har stöd för geolocation");
@@ -43,14 +45,12 @@ function validate() {
         console.log("choice1 fungerar");
         utanAvgiftIcon = 'img/utanAvgift.png';
         //Returnerar kommunala gatumarksparkeringar utan avgift
-        $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicTimeParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
             apiUtanAvgift = data;
 
             for (var i = 0; i < apiUtanAvgift.length; i++) {
-                console.log("apiLängd: " + apiUtanAvgift.length);
-                console.log("i: " + i);
                 asd(i, "utanAvgift");
-                console.log("klar mamma");
+
 
             }
         });
@@ -60,7 +60,7 @@ function validate() {
         console.log("choice2 fungerar");
         automaticon = "img/automat.png";
         //Returnerar kommunala parkeringsautomater
-        $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicPayMachines/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
             apiautomat = data;
 
             for (var i = 0; i < apiautomat.length; i++) {
@@ -74,7 +74,7 @@ function validate() {
         console.log("choice3 fungerar");
         medAvgiftIcon = 'img/medAvgift.png';
         //Returnerar kommunala gatumarksparkeringar med avgift
-        $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/PublicTollParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
             apiMedAvgift = data;
 
             for (var i = 0; i < apiMedAvgift.length; i++) {
@@ -88,7 +88,7 @@ function validate() {
         console.log("choice4 fungerar");
         handikappIcon = "img/handikapp.png";
         //Returnerar kommunala handikappsparkeringar
-        $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/HandicapParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
             apiHandikapp = data;
 
             for (var i = 0; i < apiHandikapp.length; i++) {
@@ -102,9 +102,9 @@ function validate() {
         console.log("choice5 fungerar");
         mcIcon = "img/mc.png";
         //Returnerar MC-parkeringar
-        $.getJSON('https://crossorigin.me/http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
+        $.getJSON('http://data.goteborg.se/ParkingService/v1.0/MCParkings/8e4034b9-189e-463d-8643-0c19807bb7e8?&format=json', function (data) {
             apiMc = data;
-
+            
             for (var i = 0; i < apiMc.length; i++) {
                 asd(i, "mc");
 
@@ -144,19 +144,49 @@ function asd(i, parkeringsNamn) {
             extraInfoMedAvgift = '<p class="subTitel">Extra info: </p>' + apiMedAvgift[i].ExtraInfo + '</div>';
         }
         // informations fönster om parkeringar med avgift
-        var infoMed = '<div class="infoFonster"><p class="titel">Parkering med avgift</p></div>' +
-                '<div class="border"><p class="subTitel">Plats: </p>' +
+        var infoMed = document.createElement("DIV");
+        infoMed.innerHTML = '<div class="infoFonsterMed"><p class="titel">Parkering med avgift</p></div>';
+        var border = document.createElement("DIV");
+        border.className = "border";
+        border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiMedAvgift[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiMedAvgift[i].MaxParkingTime +
                 parkeringsPlatserMedAvgift
                 + extraInfoMedAvgift;
+                infoMed.appendChild(border);
+                
+                var streetview = document.createElement("DIV");
+        streetview.style.width = "250px";
+        streetview.style.height = "120px";
+        border.appendChild(streetview);
         var windowMed = new google.maps.InfoWindow({
             content: infoMed
 
         });
-        medAvgiftMaker.addListener('click', function () {
+        medAvgiftMaker.addListener('click', function () {          
             windowMed.open(map, medAvgiftMaker);
+            // tar bort google maps infowindow vita backgrund 
+            var iwOuter = $('.gm-style-iw');
+            var iwBackground = iwOuter.prev();
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+            var iwCloseBtn = iwOuter.next();
+            iwCloseBtn.css({
+                opacity: '1',
+                right: '37px', top: '15px',
+                'box-shadow': '0 0 5px #3990B9'
+            });
+            var panorama = new google.maps.StreetViewPanorama(streetview, {
+            navigationControl: false,
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false,
+            clickToGo: false,
+            panControl: false,
+            visible: true,
+            position: medAvgiftMaker.getPosition()
+        });
         });
     }
 
@@ -185,19 +215,48 @@ function asd(i, parkeringsNamn) {
 
 
         //iformations fönster om parkeringar utan avgift
-        var infoUtan = '<div class="infoFonster"><p class="titel">Parkering utan avgift</p></div>' +
-                '<div class="border"><p class="subTitel">Plats: </p>' +
+        var infoUtan = document.createElement("DIV");
+            infoUtan.innerHTML = '<div class="infoFonsterUtan"><p class="titel">Parkering utan avgift</p></div>';
+        var border = document.createElement("DIV");
+        border.className = "border";
+        border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiUtanAvgift[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiUtanAvgift[i].MaxParkingTime +
                 parkeringsPlatserUtanAvgift +
                 extraInfoUtanAvgift;
-
+                infoUtan.appendChild(border);
+                
+                var streetview = document.createElement("DIV");
+        streetview.style.width = "250px";
+        streetview.style.height = "120px";
+        border.appendChild(streetview);
         var windowUtan = new google.maps.InfoWindow({
             content: infoUtan
         });
         utanAvgiftMarker.addListener('click', function () {
             windowUtan.open(map, utanAvgiftMarker);
+            // tar bort google maps infowindow vita backgrund 
+            var iwOuter = $('.gm-style-iw');
+            var iwBackground = iwOuter.prev();
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+            var iwCloseBtn = iwOuter.next();
+            iwCloseBtn.css({
+                opacity: '1',
+                right: '37px', top: '15px',
+                'box-shadow': '0 0 5px #3990B9'
+            });
+            var panorama = new google.maps.StreetViewPanorama(streetview, {
+            navigationControl: false,
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false,
+            clickToGo: false,
+            panControl: false,
+            visible: true,
+            position: utanAvgiftMarker.getPosition()
+        });
         });
     }
 
@@ -208,19 +267,52 @@ function asd(i, parkeringsNamn) {
             icon: automaticon
         });
         //iformations fönster om automater 
-        var infoauto = '<div class="infoFonster"><p class="titel">Automat</p></div>' +
-                '<div class="border"><p class="subTitel">Plats: </p>' +
+        
+        var infoauto = document.createElement("DIV");
+          infoauto.innerHTML = '<div class="infoFonsterAutomat"><p class="titel">Automat</p></div>';
+        var border = document.createElement("DIV");
+        border.className = "border";
+        border.innerHTML =  '<p class="subTitel">Plats: </p>' +
                 apiautomat[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiautomat[i].MaxParkingTime +
                 '<p class="subTitel">Kostnad: </p>' +
-                apiautomat[i].ParkingCost + '</div>';
+                apiautomat[i].ParkingCost;
+        infoauto.appendChild(border);
+        
+        
+        var streetview = document.createElement("DIV");
+        streetview.style.width = "250px";
+        streetview.style.height = "120px";
+       border.appendChild(streetview);
         var autowindow = new google.maps.InfoWindow({
             content: infoauto
         });
+        
         automat.addListener('click', function () {
             autowindow.open(map, automat);
-
+            // tar bort google maps infowindow vita backgrund 
+            var iwOuter = $('.gm-style-iw');
+            var iwBackground = iwOuter.prev();
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+            var iwCloseBtn = iwOuter.next();
+            iwCloseBtn.css({
+                opacity: '1',
+                right: '37px', top: '15px',
+                'box-shadow': '0 0 5px #3990B9'
+            });
+            
+            var panorama = new google.maps.StreetViewPanorama(streetview, {
+            navigationControl: false,
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false,
+            clickToGo: false,
+            panControl: false,
+            visible: true,
+            position: automat.getPosition()
+        });
         });
     }
 
@@ -236,17 +328,48 @@ function asd(i, parkeringsNamn) {
         } else {
             parkeringsPlatserHandi = '<p class="subTitel">Parkerings platser: </p>' + apiHandikapp[i].ParkingSpaces + '</div>';
         }
-        var infoHandi = '<div class="infoFonster"><p class="titel">Handikapparkering</p></div>' +
-                '<div class="border"><p class="subTitel">Plats: </p>' +
+        var infoHandi = document.createElement("DIV");
+        infoHandi.innerHTML = '<div class="infoFonsterHandi"><p class="titel">Handikapparkering</p></div>';
+        var border = document.createElement("DIV");
+        border.className = "border";
+        border.innerHTML ='<p class="subTitel">Plats: </p>' +
                 apiHandikapp[i].Name +
                 '<p class="subTitel">Max parkeringstid: </p>' +
                 apiHandikapp[i].MaxParkingTime +
-                parkeringsPlatserHandi;
+                parkeringsPlatserHandi; 
+        infoHandi.appendChild(border);
+        
+        
+        var streetview = document.createElement("DIV");
+        streetview.style.width = "250px";
+        streetview.style.height = "120px";
+       border.appendChild(streetview);
         var windowHandi = new google.maps.InfoWindow({
             content: infoHandi
         });
         handikappMarker.addListener('click', function () {
             windowHandi.open(map, handikappMarker);
+            // tar bort google maps infowindow vita backgrund 
+            var iwOuter = $('.gm-style-iw');
+            var iwBackground = iwOuter.prev();
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+            var iwCloseBtn = iwOuter.next();
+            iwCloseBtn.css({
+                opacity: '1',
+                right: '37px', top: '15px',
+                'box-shadow': '0 0 5px #3990B9'
+            });
+            var panorama = new google.maps.StreetViewPanorama(streetview, {
+            navigationControl: false,
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false,
+            clickToGo: false,
+            panControl: false,
+            visible: true,
+            position: handikappMarker.getPosition()
+        });
         });
     }
 
@@ -263,28 +386,50 @@ function asd(i, parkeringsNamn) {
             maxParkeringMc = '<p class="subTitel">Max parkeringstid: </p>' + apiMc[i].MaxParkingTime + '</div>';
         }
 
-        var infoMc = '<div class="infoFonster"><p class="titel">Mc parkeringar</p></div>' +
-                '<div class="border"><p class="subTitel">Plats: </p>' +
+        var infoMc = document.createElement("DIV");
+            infoMc.innerHTML = '<div class="infoFonsterMc"><p class="titel">Mc parkeringar</p></div>';
+            var border = document.createElement("DIV");
+            border.className = "border";
+            border.innerHTML = '<p class="subTitel">Plats: </p>' +
                 apiMc[i].Name +
                 maxParkeringMc;
+        infoMc.appendChild(border);
+        
+        
+        var streetview = document.createElement("DIV");
+        streetview.style.width = "250px";
+        streetview.style.height = "120px";
+       border.appendChild(streetview);
         var windowMc = new google.maps.InfoWindow({
             content: infoMc
         });
         McMarker.addListener('click', function () {
             windowMc.open(map, McMarker);
+            // tar bort google maps infowindow vita backgrund 
+            var iwOuter = $('.gm-style-iw');
+            var iwBackground = iwOuter.prev();
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+            var iwCloseBtn = iwOuter.next();
+            iwCloseBtn.css({
+                opacity: '1',
+                right: '37px', top: '15px',
+                'box-shadow': '0 0 5px #3990B9'
+            });
+            var panorama = new google.maps.StreetViewPanorama(streetview, {
+            navigationControl: false,
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false,
+            clickToGo: false,
+            panControl: false,
+            visible: true,
+            position: McMarker.getPosition()
+        });
         });
     }
 
-    //klicka på kartan så försviner markörer
-    /*
-     google.maps.event.addListener(map, 'click', function () {
-     windowUtan.close();
-     autowindow.close();
-     windowMed.close();
-     windowHandi.close();
-     windowMc.close();
-     });
-     */
+    
 }
 
 
